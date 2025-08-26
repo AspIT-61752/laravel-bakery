@@ -1,0 +1,9 @@
+Skrifttyper/fonts fremgår af Photoshop-filen.
+
+Som udgangspunkt:
+Lobster1.4
+OpenSans Light
+OpenSans
+OpenSans Semibold
+
+De er desuden vedhæftet i mappen Fonts ...
