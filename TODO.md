@@ -10,3 +10,6 @@
 
 -   [x] Diagram
 -   [ ] Create models and migrations
+    -   [x] Migration Tables
+    -   [ ] Models
+    -   [ ] DB Seeder
