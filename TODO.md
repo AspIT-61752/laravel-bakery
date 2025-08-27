@@ -8,4 +8,5 @@
 
 ### DB
 
--   [ ]
+-   [x] Diagram
+-   [ ] Create models and migrations
