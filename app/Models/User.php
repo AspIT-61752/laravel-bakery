@@ -45,4 +45,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function commentedProducts() {
+        return $this->belongsToMany(Product::class, 'comments')
+        ->withPivot('id', 'body', 'created_at')
+        ->as('comment')
+        ->withTimestamps()
+        ->distinct('products.id');
+    }
+
+    public function likedProducts() {
+        return $this->belongsToMany(Product::class, 'likes')
+            ->using(Like::class)
+            ->withTimestamps();
+    }
 }

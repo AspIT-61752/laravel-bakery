@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('ingredient_id')->constrained()->cascadeOnDelete();
-            $table->decimal('unit', 10, 2);
+            $table->decimal('amount', 10, 2);
+            $table->string('unit');
             $table->timestamps();
             $table->unique(['product_id', 'ingredient_id']);
         });
