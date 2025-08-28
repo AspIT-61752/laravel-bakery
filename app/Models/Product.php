@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -10,9 +11,14 @@ class Product extends Model
     // https://laravel.com/docs/12.x/eloquent#retrieving-or-creating-models
     // https://laravel.com/docs/12.x/eloquent-relationships#many-to-many
 
+    // Laravel DB Seeder
+    // https://laravel.com/docs/12.x/seeding#writing-seeders
+
     // Others
     // https://pineco.de/easy-role-management-pivot-models/
     // https://medium.com/@codebyjeff/custom-pivot-table-models-or-choosing-the-right-technique-in-laravel-fe435ce4e27e
+
+    use HasFactory;
 
     public function comments() {
         return $this->hasMany(Comment::class);

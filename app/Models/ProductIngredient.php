@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ProductIngredient extends Pivot
 {
+    use HasFactory;
+
     protected $table = 'product_ingredient';
     public $timestamps = true;
 

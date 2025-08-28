@@ -8,6 +8,9 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    // Laravel DB Seeder
+    // https://laravel.com/docs/12.x/seeding#writing-seeders
+
     /**
      * Seed the application's database.
      */
@@ -18,6 +21,14 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        $this->call([
+            ProductTypeSeeder::class,
+            IngredientSeeder::class,
+            ProductSeeder::class,
+            PivotSeeder::class,
+            CommentAndLikeSeeder::class,
         ]);
     }
 }
