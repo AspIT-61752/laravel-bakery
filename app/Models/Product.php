@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -37,7 +38,7 @@ class Product extends Model
     }
 
     public function ingredients() {
-        return $this->hasMany(Ingredient::class, 'ingredient_id')
+        return $this->belongsToMany(Ingredient::class, 'product_ingredients')
             ->using(ProductIngredient::class)
             ->withPivot('amount', 'unit')
             ->as('product_ingredient')
@@ -48,5 +49,9 @@ class Product extends Model
         return $this->belongsToMany(User::class, 'likes')
             ->using(Like::class)
             ->withTimestamps();
+    }
+
+    public function likes() {
+        return $this->hasMany(Like::class);
     }
 }

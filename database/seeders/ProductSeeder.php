@@ -26,14 +26,16 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($ProductSelection as $productName => $productType) {
-            Product::firstOrCreate([
-                'product_type_id' => ProductType::where('type_name', $productType)->firstOrFail()->value('id'),
-                'name' => $productName,
-                'slug' => Str::slug($productName, '-'),
-                'description' => 'Idk, something about the process here',
-                'recipe' => 'Figure out how to do this later',
-                'image' => null,
-            ]);
+            Product::firstOrCreate(
+                ['name' => $productName],
+                [
+                    'product_type_id' => ProductType::where('type_name', $productType)->firstOrFail()->id,
+                    'slug' => Str::slug($productName, '-'),
+                    'description' => 'Idk, something about the process here',
+                    'recipe' => 'Figure out how to do this later',
+                    'image' => null,
+                ]
+            );
         }
     }
 }
