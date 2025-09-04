@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8 mt-2">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -20,14 +20,15 @@
                             <p>♥ Like button here</p>
                         </x-primary-button>
                     </div>
-                    <div class="flex justify-between py-4">
+                    {{-- pt-4 or py-4, not really sure yet. But I like how pt-4 looks --}}
+                    <div class="flex justify-between pt-4">
                         <div>
                             <p class="text-gray-600">{{ $post->description }}</p>
                             <p class="mt-4">{{ $post->recipe }}</p>
                             <p class="text-xs text-gray-500 mt-4">Created at: {{ $post->created_at->diffForHumans() }} |
                                 Last updated: {{ $post->updated_at->diffForHumans() }}</p>
                         </div>
-                        <div>
+                        <div class=" max-w-6xl min-w-2xl">
                             <h3 class="text-lg font-bold">{{ __('Ingredients') }}</h3>
                             @foreach ($post->ingredients as $ingredient)
                                 <x-ingredient-tabs :ingredient="$ingredient" />
