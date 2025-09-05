@@ -25,8 +25,6 @@
                         <div>
                             <p class="text-gray-600">{{ $post->description }}</p>
                             <p class="mt-4">{{ $post->recipe }}</p>
-                            <p class="text-xs text-gray-500 mt-4">Created at: {{ $post->created_at->diffForHumans() }} |
-                                Last updated: {{ $post->updated_at->diffForHumans() }}</p>
                         </div>
                         <div class=" max-w-6xl min-w-2xl">
                             <h3 class="text-lg font-bold">{{ __('Ingredients') }}</h3>
@@ -35,6 +33,9 @@
                             @endforeach
                         </div>
                     </div>
+                    {{-- This I think it looks better here, but I'm unsure if it's "necessary" --}}
+                    <p class="text-xs text-gray-500 mt-4">Created at: {{ $post->created_at->diffForHumans() }} |
+                        Last updated: {{ $post->updated_at->diffForHumans() }}</p>
                 </div>
             </div>
         </div>
