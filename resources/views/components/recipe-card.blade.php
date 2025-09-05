@@ -1,5 +1,6 @@
 <div class="mb-4">
     <a href="{{ route('products.recipe', $post->slug) }}">
+        <img src="{{ $post->image }}" alt="{{ $post->name }}" class="w-full h-48 object-cover mb-2 rounded-lg">
         <h3 class="text-lg font-semibold">{{ $post->name }}</h3>
         <p class="text-gray-600">{{ $post->description }}</p>
         <p class="text-gray-600">Type: {{ $post->productType->type_name }}</p>
