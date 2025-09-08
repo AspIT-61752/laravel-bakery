@@ -21,11 +21,13 @@ class Product extends Model
 
     use HasFactory;
 
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function commentedUsers() {
+    public function commentedUsers()
+    {
         return $this->belongsToMany(User::class, 'comments')
             ->withPivot('id', 'body', 'created_at')
             ->as('comment')
@@ -33,11 +35,13 @@ class Product extends Model
             ->distinct('users.id');
     }
 
-    public function productType() {
+    public function productType()
+    {
         return $this->belongsTo(ProductType::class);
     }
 
-    public function ingredients() {
+    public function ingredients()
+    {
         return $this->belongsToMany(Ingredient::class, 'product_ingredients')
             ->using(ProductIngredient::class)
             ->withPivot('amount', 'unit')
@@ -45,13 +49,15 @@ class Product extends Model
             ->withTimestamps();
     }
 
-    public function likedBy(){
+    public function likedBy()
+    {
         return $this->belongsToMany(User::class, 'likes')
             ->using(Like::class)
             ->withTimestamps();
     }
 
-    public function likes() {
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 }

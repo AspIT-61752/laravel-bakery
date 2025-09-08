@@ -23,7 +23,9 @@
                     {{-- pt-4 or py-4, not really sure yet. But I like how pt-4 looks --}}
                     <div class="flex justify-between pt-4">
                         <div>
-                            <p class="text-gray-600">{{ $post->description }}</p>
+                            <img src="{{ $post->image }}" alt="{{ $post->name }}"
+                                class="w-full h-48 object-cover mb-2 rounded-lg">
+                            <p class="text-gray-600 flex">{{ $post->description }}</p>
                             <p class="mt-4">{{ $post->recipe }}</p>
                         </div>
                         <div class=" max-w-6xl min-w-2xl">
