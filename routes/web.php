@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -18,15 +19,9 @@ Route::get('/products/{product:slug}', [PageController::class, 'recipe'])->name(
 // Products and their subpages
 Route::middleware(['auth'])->group(function () {
 
-    // Main landing page
-    // Route::get('/', [PageController::class, 'index'])->name('frontpage');
-
-    // Product recipe page
-    // Route::get('/products/{product:slug}', [PageController::class, 'recipe'])->name('products.recipe');
-    // This should probably be on a component? Or something that uses the @auth thing in Blade
-
-    // Find a way to make this work without auth middleware so the product page are accessible to everyone, but the commenting system is only for logged in users
-    // Route::post('/products/{product:slug}/comments', [CommentController::class, 'store'])->name('products.comments.store');
+    // Comments on products
+    // Has to be inside the auth middleware so only logged in users can comment
+    Route::post('/products/{product}/comments', [CommentController::class, 'submit'])->name('products.comments.submit');
 });
 
 // Dashboard
