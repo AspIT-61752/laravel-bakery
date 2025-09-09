@@ -41,5 +41,66 @@
                 </div>
             </div>
         </div>
+        <div class="mt-4 max-w-6xl mx-auto sm:px-6 lg:px-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    @auth
+                        <form action="{{ route('products.comments.submit', $post->id) }}" method="POST" class="mb-4">
+                            @csrf
+                            <label for="body" class="block mb-2">Leave a comment,
+                                {{ Auth::user()->name }}:</label>
+                            <textarea name="body" id="body" rows="2"
+                                class="w-full border rounded-lg p-2 focus:ring focus:ring-blue-200" required></textarea>
+                            <div class="flex justify-between">
+                                {{-- Added the div as an error container so the error and max characters stay consistent --}}
+                                <div>
+                                    @error('body')
+                                        <p class="text-red-500 text-sm">Error: <span>{{ $message }}</span></p>
+                                    @enderror
+                                </div>
+                                <p class="text-gray-500 text-sm">Max 1000 characters</p>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit"
+                                    class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Post
+                                    Comment</button>
+                            </div>
+                        </form>
+                    @else
+                        <p class="text-gray-500">Login to make a comment</p>
+                    @endauth
+                    <div class="mt-6">
+                        <h4 class="text-md font-semibold mb-2">Comments for {{ $post->name }}</h4>
+                        @forelse ($post->comments as $comment)
+                            <div class="mb-4 p-3 border rounded-lg bg-gray-100">
+                                <div class="flex items-start">
+                                    <img src="{{ $comment->user->profile_picture }}" alt="{{ $comment->user->name }}"
+                                        class="w-12 h-12 rounded-full mr-2" />
+                                    {{-- 12 looks like it's the same size as the name and comment text --}}
+                                    <div>
+                                        <div class="flex items-center mb-1">
+                                            <span
+                                                class="font-bold text-gray-800 mr-2">{{ $comment->user->name }}</span>
+                                            <span
+                                                class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        <p class="text-gray-700">{{ $comment->body }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-gray-600">No comments yet. Be the first to comment!</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- <div class="mt-4 max-w-6xl mx-auto sm:px-6 lg:px-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <p>New card starts here</p>
+                </div>
+            </div>
+        </div> --}}
     </div>
 </x-app-layout>
