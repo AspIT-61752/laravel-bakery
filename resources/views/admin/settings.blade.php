@@ -4,15 +4,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Admin Dashboard
+                        Settings
                     </h2>
                     <div>
                         <ul>
-                            <li><a href="admin/users">Manage Users</a></li>
-                            <li><a href="admin/products">Manage Products</a></li>
-                            <li><a href="admin/settings">Settings</a></li>
+                            <li><a href="#">Setting 1</a></li>
+                            <li><a href="#">Setting 2</a></li>
+                            <li><a href="#">Setting 3</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 </x-app-layout>
