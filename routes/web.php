@@ -57,6 +57,17 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     // Change user info
     Route::put('/admin/change-user-info/{userID}', [AdminPageController::class, 'changeUserInfo'])->name('admin.change-user-info');
 
+    /// Product management
+
+    // Create a new product
+    Route::get('/admin/products/create', [AdminPageController::class, 'addProductPage'])->name('admin.create-product');
+
+    // Edit a product
+    Route::get('/admin/products/{productID}/edit', [AdminPageController::class, 'editProductPage'])->name('admin.edit-product');
+
+    // Delete a product
+    Route::delete('/admin/products/{productID}/delete', [AdminPageController::class, 'deleteProduct'])->name('admin.delete-product');
+
     // Looks like this works, I just have to figure out how to make a user an admin
     // I think I can just add something like a boolean 'is_admin' column to the users table.
     // That didn't work, I might have to make a policy and a gate for it as well

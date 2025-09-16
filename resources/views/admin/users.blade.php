@@ -9,7 +9,8 @@
                     <div class="mt-4">
                         <ul>
                             @foreach ($users as $user)
-                                <li class="flex justify-between items-center mb-2">
+                                <li
+                                    class="flex justify-between items-center mb-2 py-2 {{ $loop->last ? '' : 'border-b border-gray-200' }}">
                                     <div class="grid grid-cols-6 gap-1 items-center w-auto">
                                         <p class="m-auto col-span-1 text-sm">id: {{ $user->id }}</p>
                                         <input type="text" name="name" form="update-user-{{ $user->id }}"

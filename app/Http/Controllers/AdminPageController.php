@@ -88,4 +88,35 @@ class AdminPageController extends Controller
             return "User not found.";
         }
     }
+
+    /// Changes to products ///
+
+    // I couldn't think of a good way to show and change products in the admin panel, so I'm making a page for each action (add, edit, except delete)
+
+    // Add a new product
+    public function addProductPage()
+    {
+        return view('admin.add-product');
+    }
+
+    // Edit a product
+    public function editProductPage($prod)
+    {
+        // The product page should already have all products on that page, just send the entire product to the view
+        return view('admin.edit-product', compact('prod'));
+    }
+
+    // Delete a product
+    // This doesn't need a page, it'll just be a button on the products page
+    public function deleteProduct($prodID)
+    {
+        $product = Product::find($prodID);
+        if ($product) {
+            $productName = $product->name;
+            $product->delete();
+            return redirect()->back()->with('success', "Product {$productName} has been deleted");
+        } else {
+            return redirect()->back()->with('error', "Product not found.");
+        }
+    }
 }
