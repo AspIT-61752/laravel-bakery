@@ -36,7 +36,9 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     // I think I can just use the 'can' middleware to restrict access to admin users
     Route::get('/admin', [AdminPageController::class, 'admin'])->name('admin.dashboard');
 
-    Route::get('/admin/users', [AdminPageController::class, 'users'])->name('admin.users');
+    // Because of how I get the data for the selected user, I have to go through that, before I can show the page. That's why I can't use admin.users
+    // editUser returns the data to the view
+    Route::get('/admin/users', [AdminPageController::class, 'editUser'])->name('admin.edit-user');
 
     Route::get('/admin/products', [AdminPageController::class, 'products'])->name('admin.products');
 
@@ -67,6 +69,9 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
 
     // Delete a product
     Route::delete('/admin/products/{productID}/delete', [AdminPageController::class, 'deleteProduct'])->name('admin.delete-product');
+
+    // For getting the selected ID
+    Route::get('/admin/edit-user', [AdminPageController::class, 'editUser'])->name('admin.edit-user');
 
     // Looks like this works, I just have to figure out how to make a user an admin
     // I think I can just add something like a boolean 'is_admin' column to the users table.

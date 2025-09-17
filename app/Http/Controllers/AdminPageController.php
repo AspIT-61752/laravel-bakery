@@ -119,4 +119,17 @@ class AdminPageController extends Controller
             return redirect()->back()->with('error', "Product not found.");
         }
     }
+
+    // Show the edit user page
+    public function editUser(Request $request)
+    {
+        $editID = $request->query('edit_id');
+        $users = User::all();
+        $selectUser = $editID ? User::find($editID) : null;
+        if ($users) {
+            return view('admin.users', ['dataType' => 'user', 'users' => $users, 'selectedItem' => $selectUser]);
+        } else {
+            return redirect()->back()->with('error', "Product not found.");
+        }
+    }
 }
