@@ -14,11 +14,11 @@
                         </ul> --}}
                         <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4">
                             {{-- Using the RedirectCard component for navigation --}}
-                            <x-redirect-card :title="'Manage Users'" :content="'Go to user management page'" :url="route('admin.users')" />
+                            <x-redirect-card :title="'Manage Users'" :content="'Go to user management page'" :url="'admin/users'" />
 
-                            <x-redirect-card :title="'Manage Products'" :content="'Go to product management page'" :url="route('admin.products')" />
+                            <x-redirect-card :title="'Manage Products'" :content="'Go to product management page'" :url="'admin/products'" />
 
-                            <x-redirect-card :title="'Settings'" :content="'Go to settings page'" :url="route('admin.settings')" />
+                            <x-redirect-card :title="'Settings'" :content="'Go to settings page'" :url="'admin/settings'" />
                         </div>
                     </div>
                 </div>
