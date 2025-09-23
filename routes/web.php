@@ -40,7 +40,7 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     // editUser returns the data to the view
     Route::get('/admin/users', [AdminPageController::class, 'editUser'])->name('admin.edit-user');
 
-    Route::get('/admin/products', [AdminPageController::class, 'products'])->name('admin.products');
+    Route::get('/admin/products', [AdminPageController::class, 'editProduct'])->name('admin.edit-product');
 
     Route::get('/admin/settings', [AdminPageController::class, 'settings'])->name('admin.settings');
 
@@ -65,10 +65,10 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     Route::get('/admin/products/create', [AdminPageController::class, 'addProductPage'])->name('admin.create-product');
 
     // Edit a product
-    Route::get('/admin/products/{productID}/edit', [AdminPageController::class, 'editProductPage'])->name('admin.edit-product');
+    Route::put('/admin/edit-product-info/{prodID}', [AdminPageController::class, 'editProductInfo'])->name('admin.edit-product-info');
 
-    // Delete a product
-    Route::delete('/admin/products/{productID}/delete', [AdminPageController::class, 'deleteProduct'])->name('admin.delete-product');
+    // Remove a product
+    Route::delete('/admin/remove-product/{prodID}', [AdminPageController::class, 'removeProduct'])->name('admin.remove-product');
 
     // For getting the selected ID
     Route::get('/admin/edit-user', [AdminPageController::class, 'editUser'])->name('admin.edit-user');

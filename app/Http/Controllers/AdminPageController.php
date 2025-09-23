@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminPageController extends Controller
 {
@@ -99,26 +100,6 @@ class AdminPageController extends Controller
         return view('admin.add-product');
     }
 
-    // Edit a product
-    public function editProductPage($prod)
-    {
-        // The product page should already have all products on that page, just send the entire product to the view
-        return view('admin.edit-product', compact('prod'));
-    }
-
-    // Delete a product
-    // This doesn't need a page, it'll just be a button on the products page
-    public function deleteProduct($prodID)
-    {
-        $product = Product::find($prodID);
-        if ($product) {
-            $productName = $product->name;
-            $product->delete();
-            return redirect()->back()->with('success', "Product {$productName} has been deleted");
-        } else {
-            return redirect()->back()->with('error', "Product not found.");
-        }
-    }
 
     // Show the edit user page
     public function editUser(Request $request)
@@ -128,6 +109,57 @@ class AdminPageController extends Controller
         $selectUser = $editID ? User::find($editID) : null;
         if ($users) {
             return view('admin.users', ['dataType' => 'user', 'users' => $users, 'selectedItem' => $selectUser]);
+        } else {
+            return redirect()->back()->with('error', "Product not found.");
+        }
+    }
+
+    // Edit a product
+    // public function editProductPage($prod)
+    // {
+    //     // The product page should already have all products on that page, just send the entire product to the view
+    //     return view('admin.edit-product', compact('prod'));
+    // }
+
+    // Gets the data needed for the edit product page
+    public function editProduct(Request $request)
+    {
+        $editID = $request->query('edit_id');
+        $products = Product::all();
+        $selectedProduct = $editID ? Product::find($editID) : null;
+        if ($products) {
+            return view('admin.products', ['dataType' => 'product', 'products' => $products, 'selectedItem' => $selectedProduct]);
+        }
+        // The product page should already have all products on that page, just send the entire product to the view
+        return view('admin.edit-product', compact('prod'));
+    }
+
+    // Updates the product info
+    public function editProductInfo($prodID)
+    {
+        $prod = Product::find($prodID);
+        if ($prod) {
+            // Update product info based on request data
+            $prod->name = request('name') ?? $prod->name;
+            $prod->slug = Str::slug($prod->name, '-');
+            $prod->product_type_id = request('product_type_id') ?? $prod->product_type_id;
+            $prod->description = request('description') ?? $prod->description;
+            $prod->save();
+            return redirect()->back()->with('success', "Product {$prod->name}'s info has been updated.");
+        } else {
+            return "Product not found.";
+        }
+    }
+
+    // Delete a product
+    // This doesn't need a page, it'll just be a button on the products page
+    public function removeProduct($prodID)
+    {
+        $product = Product::find($prodID);
+        if ($product) {
+            $productName = $product->name;
+            $product->delete();
+            return redirect()->back()->with('success', "Product {$productName} has been deleted");
         } else {
             return redirect()->back()->with('error', "Product not found.");
         }
