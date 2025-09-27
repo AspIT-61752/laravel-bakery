@@ -20,6 +20,10 @@
                     @foreach ($columnsToShow as $column)
                         @if ($column === 'id')
                             <th>{{ $item->id }}</th>
+                        @elseif ($column === 'image')
+                            <td class="border px-4 py-2">
+                                <img src="{{ $item->image }}" alt="{{ $item->name }}" class="h-16 w-16 object-cover">
+                            </td>
                         @else
                             <td class="border px-4 py-2">
                                 <p>{{ $item->$column }}</p>
@@ -106,6 +110,16 @@
                 <p class="text-red-500">No product selected</p>
             @else
                 @foreach ($columnsToShow as $column)
+                    @if ($column === 'image')
+                        <p class="text-sm mb-1">Current Image</p>
+                        <img src="{{ asset($editingItem->image) }}" alt="{{ $editingItem->name }}"
+                            class="h-32 w-32 object-cover mb-2">
+                        <p class="text-sm mb-1">Change Image</p>
+                        <input type="file" name="{{ $column }}"
+                            form="update-prod-{{ $editingItem->id ?? '' }}"
+                            class="border p-2 rounded col-span-2 w-full" />
+                        @continue
+                    @endif
                     <p class="text-sm mb-1">{{ ucfirst($column) }}</p>
                     <input type="text" name="{{ $column }}" form="update-prod-{{ $editingItem->id ?? '' }}"
                         value="{{ $editingItem->$column ?? '' }}" class="border p-2 rounded col-span-2 w-full" />
@@ -113,7 +127,7 @@
                 <input type="hidden" id="selectedItemID" name="selectedItemID" value="">
                 <form id="update-prod-{{ $editingItem->id }}"
                     action="{{ route('admin.edit-product-info', ['prodID' => $editingItem->id]) }}" method="POST"
-                    class="inline mt-2">
+                    enctype="multipart/form-data" class="inline mt-2">
                     @csrf
                     @method('PUT')
                     <button type="submit" class="p-1 bg-green-500 text-white rounded hover:bg-green-600">

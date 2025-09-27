@@ -19,7 +19,7 @@ class EditDataComp extends Component
     public $selectedItem; // The item currently being edited
 
     private $columnsForUser = ['id', 'name', 'email', 'is_admin', 'created_at', 'updated_at'];
-    private $columnsForProduct = ['id', 'name', 'description', 'product_type_id', 'created_at', 'updated_at'];
+    private $columnsForProduct = ['id', 'name', 'description', 'product_type_id', 'image', 'created_at', 'updated_at'];
 
     public function getColumnsForDataType($dataType)
     {

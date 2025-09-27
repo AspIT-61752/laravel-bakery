@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Services\ImageUploadService;
 
 class AdminPageController extends Controller
 {
@@ -124,6 +125,7 @@ class AdminPageController extends Controller
     // Gets the data needed for the edit product page
     public function editProduct(Request $request)
     {
+
         $editID = $request->query('edit_id');
         $products = Product::all();
         $selectedProduct = $editID ? Product::find($editID) : null;
@@ -144,6 +146,27 @@ class AdminPageController extends Controller
             $prod->slug = Str::slug($prod->name, '-');
             $prod->product_type_id = request('product_type_id') ?? $prod->product_type_id;
             $prod->description = request('description') ?? $prod->description;
+
+            if (request()->hasFile('image')) {
+
+                // Validates the image
+                request()->validate([
+                    'image' => 'image|mimes:jpeg,png,jpg,webp'
+                ]);
+
+                // Gets and uploads the image
+                $image = request()->file('image');
+
+                // Gets an instance of the image upload service
+                $imageUploadService = new ImageUploadService();
+
+                // Uploads the image and gets the URL
+                $imageUrl = $imageUploadService->uploadProductImage($image, $prod->name);
+
+                // Sets the image URL to the product
+                $prod->image = $imageUrl;
+            }
+
             $prod->save();
             return redirect()->back()->with('success', "Product {$prod->name}'s info has been updated.");
         } else {
