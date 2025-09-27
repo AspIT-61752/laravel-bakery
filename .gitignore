@@ -28,3 +28,5 @@ Thumbs.db
 public/storage/*
 !public/storage/default/
 !public/storage/default/pear.png
+!storage/app/public/default/*
+!storage/app/public/default/pear.png
