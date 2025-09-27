@@ -16,10 +16,15 @@
 /public/build
 /public/hot
 /public/storage
-!/public/storage/default/*
 /storage/*.key
 /storage/pail
 /vendor
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Trying to add the default pear image to git
+!/public/storage/default/*
+public/storage/*
+!public/storage/default/
+!public/storage/default/pear.png
