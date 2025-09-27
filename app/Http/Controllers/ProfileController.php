@@ -34,7 +34,12 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('profile_image')) {
+            $request->validate([
+                'image' => 'image|mimes:jpeg,png,jpg,webp'
+            ]);
+
             $image = $request->file('profile_image');
+
             // dd($image);
             $imageUploadService = new ImageUploadService();
             $fileUrl = $imageUploadService->uploadProfileImage($image);

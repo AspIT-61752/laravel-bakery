@@ -30,3 +30,7 @@ public/storage/*
 !public/storage/default/pear.png
 !storage/app/public/default/*
 !storage/app/public/default/pear.png
+!/storage/app/public/default/*
+!/storage/app/public/default/pear.png
+!/default/*
+!default/*
