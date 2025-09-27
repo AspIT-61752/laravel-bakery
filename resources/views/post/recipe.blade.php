@@ -74,8 +74,9 @@
                         @forelse ($post->comments as $comment)
                             <div class="mb-4 p-3 border rounded-lg bg-gray-100">
                                 <div class="flex items-start">
-                                    <img src="{{ $comment->user->profile_picture }}" alt="{{ $comment->user->name }}"
-                                        class="w-12 h-12 rounded-full mr-2" />
+                                    {{-- Profile image, uses the pear as the default pfp --}}
+                                    <img src="{{ $comment->user->profile_image ? $comment->user->profile_image : asset('default/pear.png') }}"
+                                        alt="{{ $comment->user->name }}" class="w-12 h-12 rounded-full mr-2" />
                                     {{-- 12 looks like it's the same size as the name and comment text --}}
                                     <div>
                                         <div class="flex items-center mb-1">

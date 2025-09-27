@@ -26,7 +26,7 @@ class ImageUploadService
         // https://laravel.com/docs/12.x/filesystem#storing-files
 
         // Image prep
-        $storePath = (Str::slug($productName, '-') . "/" . "images");
+        $storePath = ('products/' . Str::slug($productName, '-') . "/" . "images");
 
         $fileUrl = $this->uploadImage($storePath, $image);
 
@@ -37,7 +37,7 @@ class ImageUploadService
     {
 
         // Image prep
-        $storePath = (Auth::id() . "/" . "images/");
+        $storePath = ('users/' . Auth::id() . "/" . "images/");
 
         $fileUrl = $this->uploadImage($storePath, $image);
 
@@ -46,10 +46,6 @@ class ImageUploadService
 
     private function uploadImage($path, $image)
     {
-        // Everything is is done before this.
-        // Validated at the request
-        // Path is created in the uploadXImage function
-        //
         try {
 
             // Final image prep

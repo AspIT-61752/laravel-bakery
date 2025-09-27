@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\ImageUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,14 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            // dd($image);
+            $imageUploadService = new ImageUploadService();
+            $fileUrl = $imageUploadService->uploadProfileImage($image);
+            $request->user()->profile_image = $fileUrl;
         }
 
         $request->user()->save();
