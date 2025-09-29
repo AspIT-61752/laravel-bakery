@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ingredient;
 use App\Models\Product;
+use App\Models\ProductType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -98,7 +100,10 @@ class AdminPageController extends Controller
     // Add a new product
     public function addProductPage()
     {
-        return view('admin.add-product');
+        $productTypes = ProductType::all();
+        $ingredients = Ingredient::all();
+
+        return view('admin.create-product-page', compact('productTypes', 'ingredients'));
     }
 
 
@@ -121,6 +126,68 @@ class AdminPageController extends Controller
     //     // The product page should already have all products on that page, just send the entire product to the view
     //     return view('admin.edit-product', compact('prod'));
     // }
+
+    // Creates a new product
+    public function createProduct(Request $request)
+    {   // Validate the request data
+        $valData = $request->validate([
+            'name' => 'required|string|max:255',
+            'product_type_id' => 'required|exists:product_types,id',
+            'description' => 'nullable|string',
+            'recipe' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp',
+            'ingredients' => 'required|array',
+            'ingredients.*' => 'exists:ingredients,id',
+        ]);
+
+        // dd($valData, $request->all());
+
+        // Handle image upload if an image is provided
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Get an instance of the image upload service
+            $imageUploadService = new ImageUploadService();
+
+            // Upload the image and get the URL
+            $imageUrl = $imageUploadService->uploadProductImage($image, $valData['name']);
+        }
+
+        // Create the product
+        $product = new Product();
+        $product->name = $valData['name'];
+
+        // Ran into an issue where the slug wasn't being set correctly when creating a new product, so I added this to make sure it'll be unique :)
+        $count = 1;
+        $baseSlug = Str::slug($valData['name'], '-');
+        $slug = $baseSlug;
+
+        // Keeps generating a new slug until it finds one that isn't taken
+        while (Product::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $count++;
+        }
+        $product->slug = $slug;
+
+        $product->product_type_id = $valData['product_type_id'];
+        $product->description = $valData['description'] ?? '';
+        $product->recipe = $valData['recipe'];
+
+        if ($imageUrl) {
+            $product->image = $imageUrl;
+        }
+
+        // You have to save it first, before you can attatch ingredients
+        $product->save();
+
+        // Attach ingredients to the product
+        foreach ($valData['ingredients'] as $ingredientId) {
+            $product->ingredients()->attach($ingredientId, ['amount' => 1, 'unit' => 'g']); // Temporary amount and unit, it's needed because I thought both were required when I created the migration :)
+        }
+
+        // Returns to the edit product page so the user can see the product they created
+        return redirect()->route('admin.edit-product', ['edit_id' => $product->id])
+            ->with('success', "Product {$product->name} has been created successfully.");
+    }
 
     // Gets the data needed for the edit product page
     public function editProduct(Request $request)

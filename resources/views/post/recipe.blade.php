@@ -23,7 +23,7 @@
                     {{-- pt-4 or py-4, not really sure yet. But I like how pt-4 looks --}}
                     <div class="flex justify-between pt-4">
                         <div>
-                            <img src="{{ $post->image }}" alt="{{ $post->name }}"
+                            <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
                                 class="w-full h-48 object-cover mb-2 rounded-lg">
                             <p class="text-gray-600 flex">{{ $post->description }}</p>
                             <p class="mt-4">{{ $post->recipe }}</p>
@@ -75,7 +75,7 @@
                             <div class="mb-4 p-3 border rounded-lg bg-gray-100">
                                 <div class="flex items-start">
                                     {{-- Profile image, uses the pear as the default pfp --}}
-                                    <img src="{{ $comment->user->profile_image ? $comment->user->profile_image : asset('default/pear.png') }}"
+                                    <img src="{{ $comment->user->profile_image ? asset($comment->user->profile_image) : asset('default/pear.png') }}"
                                         alt="{{ $comment->user->name }}" class="w-12 h-12 rounded-full mr-2" />
                                     {{-- 12 looks like it's the same size as the name and comment text --}}
                                     <div>

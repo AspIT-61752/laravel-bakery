@@ -64,6 +64,9 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     // Create a new product
     Route::get('/admin/products/create', [AdminPageController::class, 'addProductPage'])->name('admin.create-product');
 
+    // Adds a new product
+    Route::post('/admin/products/create', [AdminPageController::class, 'createProduct'])->name('admin.add-product');
+
     // Edit a product
     Route::put('/admin/edit-product-info/{prodID}', [AdminPageController::class, 'editProductInfo'])->name('admin.edit-product-info');
 

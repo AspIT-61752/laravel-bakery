@@ -51,7 +51,7 @@ class ImageUploadService
             // Final image prep
             $date = (new DateTime())->format('Y-m-d_H-i-s');
             $ext = $image->extension();
-            $filename = ($date . " - " . fake()->uuid() . '.' . $ext);
+            $filename = ($date . " - " . Str::uuid() . '.' . $ext);
 
             // Store the image
             Storage::disk('public')->putFileAs($path, $image, $filename);
@@ -62,7 +62,6 @@ class ImageUploadService
             // Return the file URL
             return $fileUrl;
         } catch (\Throwable $th) {
-            dd($th);
             throw $th;
         }
     }

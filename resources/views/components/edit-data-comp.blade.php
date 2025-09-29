@@ -22,7 +22,8 @@
                             <th>{{ $item->id }}</th>
                         @elseif ($column === 'image')
                             <td class="border px-4 py-2">
-                                <img src="{{ $item->image }}" alt="{{ $item->name }}" class="h-16 w-16 object-cover">
+                                <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"
+                                    class="h-16 w-16 object-cover">
                             </td>
                         @else
                             <td class="border px-4 py-2">

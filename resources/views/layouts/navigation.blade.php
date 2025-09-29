@@ -5,7 +5,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="/">
+                    {{-- <a href="/"> --}}
+                    <a href="/laravel-bakery/public/">
                         {{-- <a href="{{ route('dashboard') }}"> --}}
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
@@ -16,8 +17,10 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                        {{ __('Admin Dashboard') }}
+                    @if (Auth::user() && Auth::user()->is_admin)
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    @endif
+                    {{ __('Admin Dashboard') }}
                     </x-nav-link>
                 </div>
             </div>
