@@ -8,7 +8,12 @@
                     {{-- <a href="/"> --}}
                     <a href="/laravel-bakery/public/">
                         {{-- <a href="{{ route('dashboard') }}"> --}}
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
+                        <div class="flex gap-2 items-center h-9 w-auto fill-current text-gray-800">
+                            {{-- TODO: Add this back, it slows down development --}}
+                            <x-mdi-cookie class="block h-9 w-auto fill-current text-gray-800" />
+                            <p class="text-sm">Laravel Bakery</p>
+                        </div>
                     </a>
                 </div>
 

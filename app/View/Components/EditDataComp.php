@@ -17,9 +17,11 @@ class EditDataComp extends Component
     public $allTags; // Role tag or tags for products, it's a list of all available tags. Could probably make a function that loads it, depending on the dataType
     public $columnsToShow; // Which columns to show in the edit table
     public $selectedItem; // The item currently being edited
+    public $productTypes; // List of all product types
+    public $ingredients; // List of all ingredients
 
-    private $columnsForUser = ['id', 'name', 'email', 'is_admin', 'created_at', 'updated_at'];
-    private $columnsForProduct = ['id', 'name', 'description', 'product_type_id', 'image', 'created_at', 'updated_at'];
+    private $columnsForUser = ['id', 'name', 'email', 'is_admin', 'created_at'];
+    private $columnsForProduct = ['id', 'name', 'description', 'product_type_id', 'image',];
 
     public function getColumnsForDataType($dataType)
     {
@@ -32,7 +34,7 @@ class EditDataComp extends Component
         }
     }
 
-    public function __construct($dataType, $data, $selectedItem = null, $columnsToShow = [])
+    public function __construct($dataType, $data, $selectedItem = null, $columnsToShow = [], $productTypes = null, $ingredients = null)
     {
         $this->dataType = $dataType;
         $this->data = $data;

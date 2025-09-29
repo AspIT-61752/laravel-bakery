@@ -14,7 +14,8 @@
                         </div>
                     </div>
                     {{-- {{ dd($products, $selectedItem) }} --}}
-                    <x-edit-data-comp :data=$products :dataType="'product'" :selectedItem="$selectedItem" />
+                    <x-edit-data-comp :data="$products" :dataType="'product'" :selectedItem="$selectedItem" :productTypes="$productTypes"
+                        :ingredients="$ingredients" />
                 </div>
             </div>
         </div>

@@ -26,7 +26,10 @@ class AdminPageController extends Controller
     public function products()
     {
         $products = Product::all();
-        return view('admin.products', compact('products'));
+        // Gets data for the product edit form
+        $productTypes = ProductType::all();
+        $ingredients = Ingredient::all();
+        return view('admin.products', compact('products', 'productTypes', 'ingredients'));
     }
 
     public function settings()
@@ -111,10 +114,15 @@ class AdminPageController extends Controller
     public function editUser(Request $request)
     {
         $editID = $request->query('edit_id');
+
+        // Gets data for the product edit form
+        $productTypes = ProductType::all();
+        $ingredients = Ingredient::all();
+
         $users = User::all();
         $selectUser = $editID ? User::find($editID) : null;
         if ($users) {
-            return view('admin.users', ['dataType' => 'user', 'users' => $users, 'selectedItem' => $selectUser]);
+            return view('admin.users', ['dataType' => 'user', 'users' => $users, 'selectedItem' => $selectUser, 'productTypes' => $productTypes, 'ingredients' => $ingredients]);
         } else {
             return redirect()->back()->with('error', "Product not found.");
         }
@@ -196,8 +204,12 @@ class AdminPageController extends Controller
         $editID = $request->query('edit_id');
         $products = Product::all();
         $selectedProduct = $editID ? Product::find($editID) : null;
+
+        $productTypes = ProductType::all();
+        $ingredients = Ingredient::all();
+
         if ($products) {
-            return view('admin.products', ['dataType' => 'product', 'products' => $products, 'selectedItem' => $selectedProduct]);
+            return view('admin.products', ['dataType' => 'product', 'products' => $products, 'selectedItem' => $selectedProduct, 'productTypes' => $productTypes, 'ingredients' => $ingredients]);
         }
         // The product page should already have all products on that page, just send the entire product to the view
         return view('admin.edit-product', compact('prod'));

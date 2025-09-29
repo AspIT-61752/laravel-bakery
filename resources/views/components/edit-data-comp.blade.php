@@ -1,5 +1,12 @@
+@props(['data', 'dataType', 'selectedItem' => null, 'productTypes' => null, 'ingredients' => null])
 @php
+
+    use App\Models\ProductType;
+
     $editingItem = $selectedItem ?? null;
+    $productTypes = ProductType::all() ?? null;
+    // $PT = $productTypes ?? null;
+    // $ingredients = $ingredients ?? null;
 @endphp
 
 <div class="mt-4 grid md:grid-cols-3 sm:grid-cols-1 gap-4">
@@ -9,7 +16,11 @@
             <thead>
                 <tr>
                     @foreach ($columnsToShow as $column)
-                        <th class="border px-2 py-2">{{ ucfirst($column) }}</th>
+                        @if ($column === 'product_type_id' && $dataType === 'product')
+                            <th class="border px-2 py-2">Type</th>
+                        @else
+                            <th class="border px-2 py-2">{{ ucfirst($column) }}</th>
+                        @endif
                     @endforeach
                     <th class="border px-2 py-2" scope="col">Actions</th>
                 </tr>
@@ -24,6 +35,13 @@
                             <td class="border px-4 py-2">
                                 <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"
                                     class="h-16 w-16 object-cover">
+                            </td>
+                        @elseif ($column === 'product_type_id' && $dataType === 'product')
+                            <td class="border px-4 py-2">
+                                @php
+                                    $type = $productTypes->firstWhere('id', $item->product_type_id);
+                                @endphp
+                                <p>{{ $type ? $type->type_name : 'N/A' }}</p>
                             </td>
                         @else
                             <td class="border px-4 py-2">
@@ -121,6 +139,21 @@
                             class="border p-2 rounded col-span-2 w-full" />
                         @continue
                     @endif
+                    {{-- A dropdown I made for Create Products --}}
+                    @if ($column === 'product_type_id')
+                        <p class="text-sm mb-1">Type</p>
+                        <select name="product_type_id" id="product_type_id"
+                            class="border border-gray-600 rounded p-2 w-full"
+                            form="update-prod-{{ $editingItem->id ?? '' }}" required>
+                            <option value="">Select a type</option>
+                            @foreach ($productTypes as $type)
+                                <option value="{{ $type->id }}" @if (isset($editingItem) && $editingItem->product_type_id == $type->id) selected @endif>
+                                    {{ $type->type_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @continue
+                    @endif
                     <p class="text-sm mb-1">{{ ucfirst($column) }}</p>
                     <input type="text" name="{{ $column }}" form="update-prod-{{ $editingItem->id ?? '' }}"
                         value="{{ $editingItem->$column ?? '' }}" class="border p-2 rounded col-span-2 w-full" />
@@ -131,8 +164,13 @@
                     enctype="multipart/form-data" class="inline mt-2">
                     @csrf
                     @method('PUT')
-                    <button type="submit" class="p-1 bg-green-500 text-white rounded hover:bg-green-600">
-                        <x-bx-edit class="w-10" /></button>
+                    <button type="submit"
+                        class="p-1 bg-green-500 text-white rounded hover:bg-green-600 flex text-center">
+                        <p>
+                            save
+                        </p>
+                        <x-bx-edit class="w-10" />
+                    </button>
             @endif
         @endif
     </div>
