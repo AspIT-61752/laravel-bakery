@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Services\ImageUploadService;
+// use Illuminate\Support\Facades\Log;
 
 class AdminPageController extends Controller
 {
@@ -138,6 +139,7 @@ class AdminPageController extends Controller
     // Creates a new product
     public function createProduct(Request $request)
     {   // Validate the request data
+
         $valData = $request->validate([
             'name' => 'required|string|max:255',
             'product_type_id' => 'required|exists:product_types,id',
@@ -147,6 +149,7 @@ class AdminPageController extends Controller
             'ingredients' => 'required|array',
             'ingredients.*' => 'exists:ingredients,id',
         ]);
+        // Log::info('Image', ['image' => $request->file('image')]);
 
         // dd($valData, $request->all());
 
@@ -159,6 +162,7 @@ class AdminPageController extends Controller
 
             // Upload the image and get the URL
             $imageUrl = $imageUploadService->uploadProductImage($image, $valData['name']);
+            // Log::info('Image uploaded to: ' . $imageUrl);
         }
 
         // Create the product
