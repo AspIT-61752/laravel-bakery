@@ -84,12 +84,14 @@ class AdminPageController extends Controller
     // Change user info
     public function changeUserInfo($userID)
     {
+        // dd(request()->all());
         // dd($userID);
         $user = User::find($userID);
         if ($user) {
             // Update user info based on request data
             $user->name = request('name') ?? $user->name;
             $user->email = request('email') ?? $user->email;
+            $user->is_admin = request('is_admin') ?? $user->is_admin;
             $user->save();
             return redirect()->back()->with('success', "User {$user->name}'s info has been updated.");
         } else {
