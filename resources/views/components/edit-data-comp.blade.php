@@ -9,10 +9,134 @@
     // $ingredients = $ingredients ?? null;
 @endphp
 
-<div class="mt-4 grid md:grid-cols-3 sm:grid-cols-1 gap-4">
+<div>
+    <!-- Modal toggle -->
+    <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button">
+        Edit {{ ucfirst($dataType) }}
+    </button>
+
+    {{-- I have to press the button to open the editing page --}}
+    @if ($editingItem)
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var btn = document.querySelector('[data-modal-toggle="crud-modal"]');
+                if (btn) {
+                    // wait for 450 ms
+                    setTimeout(function() {
+                        btn.click();
+                    }, 350);
+                }
+            })
+        </script>
+    @endif
+
+    <!-- Main modal -->
+    <div id="crud-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <!-- Modal header -->
+                <div
+                    class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    {{-- The title --}}
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Edit {{ ucfirst($dataType) }}
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-toggle="crud-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                @if ($editingItem)
+                    <form class="p-4 md:p-5" method="POST"
+                        action="{{ $dataType === 'user' ? route('admin.change-user-info', ['userID' => $editingItem->id]) : route('admin.edit-product-info', ['prodID' => $editingItem->id]) }}"
+                        @if ($dataType === 'user') enctype="multipart/form-data"
+                            @csrf @endif
+                        @if ($dataType === 'product') enctype="multipart/form-data" @endif>
+                        @csrf
+                        @method('PUT')
+                        <div class="grid gap-4 mb-4 grid-cols-2">
+                            @foreach ($columnsToShow as $column)
+                                @if ($column === 'id')
+                                    @continue
+                                @endif
+                                @if ($dataType === 'product' && $column === 'image')
+                                    <div class="col-span-2">
+                                        <label for="image"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
+                                            image</label>
+                                        <img src="{{ asset($editingItem->image) }}" alt="{{ $editingItem->name }}"
+                                            class="h-16 w-16 object-cover mb-2">
+                                        <input type="file" name="image" id="image"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    </div>
+                                    @continue
+                                @endif
+                                @if ($dataType === 'product' && $column === 'product_type_id')
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <label for="product_type_id"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                                        <select name="product_type_id" id="product_type_id"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            required>
+                                            <option value="">Select a type</option>
+                                            @foreach ($productTypes as $type)
+                                                <option value="{{ $type->id }}"
+                                                    @if ($editingItem->product_type_id == $type->id) selected @endif>
+                                                    {{ $type->type_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @continue
+                                @endif
+                                <div class="col-span-2">
+                                    <label for="{{ $column }}"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ ucfirst($column) }}</label>
+                                    <input type="text" name="{{ $column }}" id="{{ $column }}"
+                                        value="{{ $editingItem->$column ?? '' }}"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Enter {{ $column }}" required>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="flex items-center justify-between space-x-2">
+                            <button type="submit"
+                                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <x-bx-edit class="w-6" />
+                                Save changes
+                            </button>
+
+                            <button type="button" data-modal-toggle="crud-modal"
+                                class="text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                <x-mdi-trash-can-outline class="w-6" />
+                                Discard changes
+                            </button>
+                        </div>
+                    </form>
+                @else
+                    <div class="p-4 text-red-500">No {{ $dataType }} selected for editing.</div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- The table --}}
+<div class="mt-4 grid md:grid-cols-2 sm:grid-cols-2 gap-4">
     <div class="col-span-2 md:col-span-2 sm:col-span-1">
         {{-- The form --}}
-        <table action="" class="col-span-2 sm:col-span-1 overflow-scroll">
+        <table action="" class="overflow-scroll w-full">
             <thead>
                 <tr>
                     @foreach ($columnsToShow as $column)
@@ -84,8 +208,8 @@
                                 </button>
                             </form>
                             {{-- Delete Button --}}
-                            <form action="{{ route('admin.remove-product', ['prodID' => $item->id]) }}" method="POST"
-                                class="inline">
+                            <form action="{{ route('admin.remove-product', ['prodID' => $item->id]) }}"
+                                method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="p-1 bg-red-500 text-white rounded hover:bg-red-600">
@@ -97,81 +221,5 @@
                 </tr>
             @endforeach
         </table>
-    </div>
-    {{-- Edit User Info --}}
-
-    {{-- When the user presses the edit button, all of the info in here should update with the row of data --}}
-    <div class="col-span-1">
-        <p>Edit {{ ucfirst($dataType) }} Info</p>
-        @if ($dataType === 'user')
-            {{-- All cols for the selected dataType of User --}}
-            @if (!$editingItem)
-                <p class="text-red-500">No user selected</p>
-            @else
-                @foreach ($columnsToShow as $column)
-                    <p class="text-sm mb-1">{{ ucfirst($column) }}</p>
-                    <input type="text" name="{{ $column }}" form="update-user-{{ $editingItem->id ?? '' }}"
-                        value="{{ $editingItem->$column ?? '' }}" class="border p-2 rounded col-span-2 w-full" />
-                @endforeach
-                <input type="hidden" id="selectedItemID" name="selectedItemID" value="">
-                <form id="update-user-{{ $editingItem->id }}"
-                    action="{{ route('admin.change-user-info', ['userID' => $editingItem->id]) }}" method="POST"
-                    class="inline mt-2">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="p-1 bg-green-500 text-white rounded hover:bg-green-600">
-                        <x-bx-edit class="w-10" /></button>
-            @endif
-        @endif
-        @if ($dataType === 'product')
-            {{-- All cols for dataType Product --}}
-            @if (!$editingItem)
-                <p class="text-red-500">No product selected</p>
-            @else
-                @foreach ($columnsToShow as $column)
-                    @if ($column === 'image')
-                        <p class="text-sm mb-1">Current Image</p>
-                        <img src="{{ asset($editingItem->image) }}" alt="{{ $editingItem->name }}"
-                            class="h-32 w-32 object-cover mb-2">
-                        <p class="text-sm mb-1">Change Image</p>
-                        <input type="file" name="{{ $column }}"
-                            form="update-prod-{{ $editingItem->id ?? '' }}"
-                            class="border p-2 rounded col-span-2 w-full" />
-                        @continue
-                    @endif
-                    {{-- A dropdown I made for Create Products --}}
-                    @if ($column === 'product_type_id')
-                        <p class="text-sm mb-1">Type</p>
-                        <select name="product_type_id" id="product_type_id"
-                            class="border border-gray-600 rounded p-2 w-full"
-                            form="update-prod-{{ $editingItem->id ?? '' }}" required>
-                            <option value="">Select a type</option>
-                            @foreach ($productTypes as $type)
-                                <option value="{{ $type->id }}" @if (isset($editingItem) && $editingItem->product_type_id == $type->id) selected @endif>
-                                    {{ $type->type_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @continue
-                    @endif
-                    <p class="text-sm mb-1">{{ ucfirst($column) }}</p>
-                    <input type="text" name="{{ $column }}" form="update-prod-{{ $editingItem->id ?? '' }}"
-                        value="{{ $editingItem->$column ?? '' }}" class="border p-2 rounded col-span-2 w-full" />
-                @endforeach
-                <input type="hidden" id="selectedItemID" name="selectedItemID" value="">
-                <form id="update-prod-{{ $editingItem->id }}"
-                    action="{{ route('admin.edit-product-info', ['prodID' => $editingItem->id]) }}" method="POST"
-                    enctype="multipart/form-data" class="inline mt-2">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit"
-                        class="p-1 bg-green-500 text-white rounded hover:bg-green-600 flex text-center">
-                        <p>
-                            save
-                        </p>
-                        <x-bx-edit class="w-10" />
-                    </button>
-            @endif
-        @endif
     </div>
 </div>
