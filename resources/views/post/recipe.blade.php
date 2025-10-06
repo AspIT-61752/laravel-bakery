@@ -29,26 +29,38 @@
                         </form>
                     </div>
                     {{-- pt-4 or py-4, not really sure yet. But I like how pt-4 looks --}}
-                    <div class="flex justify-between pt-4">
-                        <div>
-                            {{-- <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
-                                class="w-full h-48 object-cover mb-2 rounded-lg"> --}}
-                            <div class="relative w-full h-48 mb-2 rounded-lg overflow-hidden">
-                                <!-- Blurry background -->
-                                <img src="{{ asset($post->image) }}" alt=""
-                                    class="absolute inset-0 w-full h-full object-cover filter blur-lg scale-110" />
-                                <!-- Main image -->
-                                <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
-                                    class="relative w-full h-full object-contain object-center z-10 rounded-lg" />
+                    <div class="flex flex-col pt-4 gap-6">
+
+                        {{-- Top row: Image and Ingredients side by side on desktop, stacked on mobile --}}
+                        <div class="flex flex-col lg:flex-row gap-6">
+
+                            {{-- Image --}}
+                            <div class="w-full lg:w-2/3">
+                                <div class="relative w-64 h-48 mb-2 rounded-lg overflow-hidden">
+                                    {{-- Blurry background --}}
+                                    <img src="{{ asset($post->image) }}" alt=""
+                                        class="absolute inset-0 w-full h-full object-cover filter blur-lg scale-110" />
+                                    {{-- Main image --}}
+                                    <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
+                                        class="relative w-full h-full object-contain object-center z-10 rounded-lg" />
+                                </div>
                             </div>
+
+                            {{-- Ingredients --}}
+                            <div class="mr-auto lg:w-1/3 lg:ml-auto lg:self-start">
+                                <h3 class="text-lg font-bold">{{ __('Ingredients') }}</h3>
+                                @foreach ($post->ingredients as $ingredient)
+                                    <x-ingredient-tabs :ingredient="$ingredient" />
+                                @endforeach
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Description and recipe --}}
+                        <div class="w-full">
                             <p class="text-gray-600 flex">{{ $post->description }}</p>
                             <p class="mt-4">{{ $post->recipe }}</p>
-                        </div>
-                        <div class=" max-w-6xl min-w-2xl">
-                            <h3 class="text-lg font-bold">{{ __('Ingredients') }}</h3>
-                            @foreach ($post->ingredients as $ingredient)
-                                <x-ingredient-tabs :ingredient="$ingredient" />
-                            @endforeach
                         </div>
                     </div>
                     {{-- This I think it looks better here, but I'm unsure if it's "necessary" --}}
