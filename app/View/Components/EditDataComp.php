@@ -21,7 +21,7 @@ class EditDataComp extends Component
     public $ingredients; // List of all ingredients
 
     private $columnsForUser = ['id', 'name', 'email', 'is_admin', 'created_at'];
-    private $columnsForProduct = ['id', 'name', 'description', 'ingredients', 'product_type_id', 'image',];
+    private $columnsForProduct = ['id', 'name', 'description', 'recipe', 'ingredients', 'product_type_id', 'image',];
 
     public function getColumnsForDataType($dataType)
     {

@@ -231,6 +231,7 @@ class AdminPageController extends Controller
             $prod->slug = Str::slug($prod->name, '-');
             $prod->product_type_id = request('product_type_id') ?? $prod->product_type_id;
             $prod->description = request('description') ?? $prod->description;
+            $prod->recipe = request('recipe') ?? $prod->recipe;
 
             if (request()->hasFile('image')) {
 
