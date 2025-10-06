@@ -18,7 +18,8 @@
 
                             <x-redirect-card :title="'Manage Products'" :content="'Go to product management page'" :url="'admin/products'" />
 
-                            <x-redirect-card :title="'Settings'" :content="'Go to settings page'" :url="'admin/settings'" />
+                            {{-- Didn't get to add this, I wanted to make global settings for the entire page, didn't happen --}}
+                            {{-- <x-redirect-card :title="'Settings'" :content="'Go to settings page'" :url="'admin/settings'" /> --}}
                         </div>
                     </div>
                 </div>

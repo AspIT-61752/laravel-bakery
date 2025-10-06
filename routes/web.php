@@ -24,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
     // Comments on products
     // Has to be inside the auth middleware so only logged in users can comment
     Route::post('/products/{product}/comments', [CommentController::class, 'submit'])->name('products.comments.submit');
+
+    // Like toggle
+    Route::post('/products/{product:slug}/like', [PageController::class, 'likeToggle'])->name('like.toggle');
 });
 
 // Admin routes
@@ -31,6 +34,7 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     // Admin dashboard or other admin routes can be defined here
     // https://laravel.com/docs/12.x/authorization#generating-policies
     // https://laravel.com/docs/12.x/authorization#gate-responses
+
 
     // https://laravel.com/docs/12.x/authorization#via-middleware
     // I think I can just use the 'can' middleware to restrict access to admin users

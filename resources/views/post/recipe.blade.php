@@ -16,9 +16,17 @@
                             {{-- This should be #9a9a9a but I might be able to just use TailWind colors --}}
                             <h3 class="text-lg font-semibold">{{ $post->productType->type_name }}</h3>
                         </div>
-                        <x-primary-button class="mt-2 mb-4">
-                            <p>♥ Like button here</p>
-                        </x-primary-button>
+                        <form action="{{ route('like.toggle', $post) }}" method="POST">
+                            @csrf
+                            <x-primary-button class="mt-2 mb-4">
+                                @if (auth()->user() && $post->likes->where('user_id', auth()->id())->count())
+                                    <p>♥ Liked</p>
+                                @else
+                                    <p>♡ Like</p>
+                                @endif
+                                <span class="ml-2">{{ $post->likes->count() }}</span>
+                            </x-primary-button>
+                        </form>
                     </div>
                     {{-- pt-4 or py-4, not really sure yet. But I like how pt-4 looks --}}
                     <div class="flex justify-between pt-4">

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -29,5 +31,41 @@ class PageController extends Controller
         // "Dynamic relationship properties perform "lazy loading", meaning they will only load their relationship data when you actually access them. Because of this, developers often use eager loading to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations."
         // https://laravel.com/docs/12.x/eloquent-relationships#eager-loading
         // I'm not sure if they use lazy loading or eager loading when using with(), it should be eager loading though, it loads everything all at once
+    }
+
+    public function likeToggle(Request $request, Product $product)
+    {
+        $like = Like::where('user_id', $request->user()->id)->where('product_id', $product->id)->first();
+
+        if ($like) {
+            $like->delete();
+        } else {
+            Like::create(['user_id' => Auth::id(), 'product_id' => $product->id]);
+        }
+
+        return redirect()->back();
+
+        // $user = $request->user();
+        // if (!$user) {
+        //     return response()->json(['message' => 'Unauthorized'], 401);
+        // }
+
+        // // Toggle the like
+        // $like = $product->likes()->where('user_id', $user->id)->first();
+        // if ($like) {
+        //     // If the like exists, remove it (unlike)
+        //     $like->delete();
+        //     $liked = false;
+        // } else {
+        //     // If the like doesn't exist, create it (like)
+        //     $product->likes()->create(['user_id' => $user->id]);
+        //     $liked = true;
+        // }
+
+        // // Return the new like status and total likes count
+        // return response()->json([
+        //     'liked' => $liked,
+        //     'total_likes' => $product->likes()->count(),
+        // ]);
     }
 }

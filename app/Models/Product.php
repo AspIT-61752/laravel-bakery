@@ -49,15 +49,15 @@ class Product extends Model
             ->withTimestamps();
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
     public function likedBy()
     {
         return $this->belongsToMany(User::class, 'likes')
             ->using(Like::class)
             ->withTimestamps();
-    }
-
-    public function likes()
-    {
-        return $this->hasMany(Like::class);
     }
 }
