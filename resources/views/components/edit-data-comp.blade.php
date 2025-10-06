@@ -168,6 +168,8 @@
                     @foreach ($columnsToShow as $column)
                         @if ($column === 'product_type_id' && $dataType === 'product')
                             <th class="border px-2 py-2">Type</th>
+                        @elseif ($dataType === 'product' && $column === 'ingredients')
+                            @continue
                         @else
                             <th class="border px-2 py-2">{{ ucfirst($column) }}</th>
                         @endif
