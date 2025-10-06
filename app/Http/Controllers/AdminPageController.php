@@ -252,6 +252,13 @@ class AdminPageController extends Controller
                 $prod->image = $imageUrl;
             }
 
+            // Add the new ingredients
+            $prod->ingredients()->detach(); // Removes all existing ingredients
+            $newIngredients = request('ingredients', []); // Gets the new ingredients from the request
+            foreach ($newIngredients as $ingredientId) {
+                $prod->ingredients()->attach($ingredientId, ['amount' => 1, 'unit' => 'g']); // Temporary amount and unit, it's needed because I thought both were required when I created the migration :)
+            }
+
             $prod->save();
             return redirect()->back()->with('success', "Product {$prod->name}'s info has been updated.");
         } else {

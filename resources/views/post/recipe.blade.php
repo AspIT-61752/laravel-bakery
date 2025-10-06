@@ -31,8 +31,16 @@
                     {{-- pt-4 or py-4, not really sure yet. But I like how pt-4 looks --}}
                     <div class="flex justify-between pt-4">
                         <div>
-                            <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
-                                class="w-full h-48 object-cover mb-2 rounded-lg">
+                            {{-- <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
+                                class="w-full h-48 object-cover mb-2 rounded-lg"> --}}
+                            <div class="relative w-full h-48 mb-2 rounded-lg overflow-hidden">
+                                <!-- Blurry background -->
+                                <img src="{{ asset($post->image) }}" alt=""
+                                    class="absolute inset-0 w-full h-full object-cover filter blur-lg scale-110" />
+                                <!-- Main image -->
+                                <img src="{{ asset($post->image) }}" alt="{{ $post->name }}"
+                                    class="relative w-full h-full object-contain object-center z-10 rounded-lg" />
+                            </div>
                             <p class="text-gray-600 flex">{{ $post->description }}</p>
                             <p class="mt-4">{{ $post->recipe }}</p>
                         </div>

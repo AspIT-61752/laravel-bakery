@@ -41,9 +41,21 @@
                             @foreach ($randomPosts as $post)
                                 <div class="{{ $loop->index === 0 ? 'hidden' : '' }} duration-700 ease-in-out"
                                     data-carousel-item>
-                                    <a href="products/{{ $post->slug }}"><img src="{{ $post->image }}"
-                                            class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                            alt="{{ $post->name }}"></a>
+                                    {{-- <a href="products/{{ $post->slug }}"><img src="{{ $post->image }}"
+                                            class="absolute block w-full object-cover object-top -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                            alt="{{ $post->name }}"></a> --}}
+                                    <a href="products/{{ $post->slug }}">
+                                        <div class="relative w-full h-56 md:h-96 overflow-hidden">
+                                            <!-- Blurry background -->
+                                            <img src="{{ $post->image }}"
+                                                class="absolute inset-0 w-full h-full object-cover filter blur-lg scale-110"
+                                                alt="">
+                                            <!-- Main image -->
+                                            <img src="{{ $post->image }}"
+                                                class="relative w-full h-full object-contain object-center z-10"
+                                                alt="{{ $post->name }}">
+                                        </div>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>

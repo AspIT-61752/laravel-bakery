@@ -2,9 +2,11 @@
 @php
 
     use App\Models\ProductType;
+    use App\Models\Ingredient;
 
     $editingItem = $selectedItem ?? null;
     $productTypes = ProductType::all() ?? null;
+    $ingredients = Ingredient::all() ?? null;
     // $PT = $productTypes ?? null;
     // $ingredients = $ingredients ?? null;
 @endphp
@@ -12,7 +14,7 @@
 <div>
     <!-- Modal toggle -->
     <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
         type="button">
         Edit {{ ucfirst($dataType) }}
     </button>
@@ -35,18 +37,17 @@
     <!-- Main modal -->
     <div id="crud-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full border-1 border-indigo-900/25">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <div class="relative rounded-lg shadow-sm bg-gray-700">
                 <!-- Modal header -->
-                <div
-                    class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
                     {{-- The title --}}
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="text-lg font-semibold text-white">
                         Edit {{ ucfirst($dataType) }}
                     </h3>
                     <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white"
                         data-modal-toggle="crud-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
@@ -72,22 +73,21 @@
                                 @endif
                                 @if ($dataType === 'product' && $column === 'image')
                                     <div class="col-span-2">
-                                        <label for="image"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
+                                        <label for="image" class="block mb-2 text-sm font-medium  text-white">Current
                                             image</label>
                                         <img src="{{ asset($editingItem->image) }}" alt="{{ $editingItem->name }}"
                                             class="h-16 w-16 object-cover mb-2">
                                         <input type="file" name="image" id="image"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            class="border text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500">
                                     </div>
                                     @continue
                                 @endif
                                 @if ($dataType === 'product' && $column === 'product_type_id')
                                     <div class="col-span-2 sm:col-span-1">
                                         <label for="product_type_id"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                                            class="block mb-2 text-sm font-medium  text-white">Type</label>
                                         <select name="product_type_id" id="product_type_id"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            class="border text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
                                             required>
                                             <option value="">Select a type</option>
                                             @foreach ($productTypes as $type)
@@ -100,25 +100,51 @@
                                     </div>
                                     @continue
                                 @endif
+                                @if ($dataType === 'product' && $column === 'ingredients')
+                                    <div class="col-span-2 sm:col-span-1">
+                                        {{-- <label for="ingredients[]" class="">Ingredients</label>
+                                        <select name="ingredients[]" id="ingredients"
+                                            class="border border-gray-600 rounded p-2 w-full" size="6" multiple
+                                            required>
+                                            @foreach ($ingredients as $ingredient)
+                                                <option value="{{ $ingredient->id }}">{{ $ingredient->ingredient_name }}
+                                                </option>
+                                            @endforeach
+                                        </select> --}}
+                                        <label for="ingredients[]"
+                                            class="block mb-2 text-sm font-medium  text-white">Ingredients</label>
+                                        <select name="ingredients[]" id="ingredients" size="6" multiple
+                                            class="border text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                                            required>
+                                            @foreach ($ingredients as $ingredient)
+                                                <option value="{{ $ingredient->id }}"
+                                                    @if (in_array($ingredient->id, $editingItem->ingredients->pluck('id')->toArray())) selected @endif>
+                                                    {{ $ingredient->ingredient_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @continue
+                                @endif
                                 <div class="col-span-2">
                                     <label for="{{ $column }}"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ ucfirst($column) }}</label>
+                                        class="block mb-2 text-sm font-medium text-white">{{ ucfirst($column) }}</label>
                                     <input type="text" name="{{ $column }}" id="{{ $column }}"
                                         value="{{ $editingItem->$column ?? '' }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        class="border text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
                                         placeholder="Enter {{ $column }}" required>
                                 </div>
                             @endforeach
                         </div>
                         <div class="flex items-center justify-between space-x-2">
                             <button type="submit"
-                                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                class="text-white inline-flex items-center  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
                                 <x-bx-edit class="w-6" />
                                 Save changes
                             </button>
 
                             <button type="button" data-modal-toggle="crud-modal"
-                                class="text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                class="text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-red-600 hover:bg-red-700 focus:ring-red-800">
                                 <x-mdi-trash-can-outline class="w-6" />
                                 Discard changes
                             </button>
@@ -155,6 +181,8 @@
                     @foreach ($columnsToShow as $column)
                         @if ($column === 'id')
                             <th>{{ $item->id }}</th>
+                        @elseif ($dataType === 'product' && $column === 'ingredients')
+                            @continue
                         @elseif ($column === 'image')
                             <td class="border px-4 py-2">
                                 <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"

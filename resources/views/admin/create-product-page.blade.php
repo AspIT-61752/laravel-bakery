@@ -22,7 +22,7 @@
                             <div class="flex flex-col gap-2">
                                 <label for="image" class="">Product image</label>
                                 <input type="file" name="image" id="image"
-                                    class="border border-gray-600 rounded p-2 w-full">
+                                    class="border border-gray-600 rounded p-2 w-full" required>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label for="product_type_id" class="">Product type</label>
